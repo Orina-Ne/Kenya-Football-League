@@ -90,9 +90,9 @@ void write_fixtures(){
 
 void display_fixtures(){
     for(int k = 0; k < fixtures.size(); k++){
-        cout<<fixtures[k].weekend<<endl;
+        cout<<"weekend"<< fixtures[k].weekend<<endl;
         cout<<fixtures[k].home_team <<endl;
-        cout<<  "vs\n";
+        cout<<  "\tvs\n";
         cout <<fixtures[k].away_team<< endl;
         cout<<fixtures[k].stadium<< endl;
         cout<<fixtures[k].leg<<"leg"<< endl;
