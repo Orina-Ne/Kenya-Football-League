@@ -3,7 +3,7 @@
 #include <sstream>
 #include <vector>
 using namespace std;
-
+//Structure has been used to hold each fixtures details .
 struct Fixture{
     string home_team;
     string away_team;
@@ -12,18 +12,19 @@ struct Fixture{
     int leg;
     int weekend;
 };
-
+// Arrays are used to store the collection of the teams  details
 string team_names[10];
 string home_towns[10];
 string stadiums[10];
+//This is the file from CSV that contains data of teams
 const string file_name = "team.csv";
 int count = 0;
 vector<Fixture> fixtures;
-
+//This function reads Data from the CSV file however it does not return it
 void read_csv(const string file_name){
     ifstream csv_file(file_name);
     string line;
-
+//read each line of CSV file until 10 teams details are reached
     while (getline(csv_file,line) && count < 10){
         stringstream ss(line);
         getline(ss, team_names[count], ',');
