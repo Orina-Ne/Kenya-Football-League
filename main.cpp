@@ -88,23 +88,7 @@ void generate_fixtures(){
                 }
             }
         }
-    }
-}
-
-void write_fixtures(){
-    ofstream matches("fixtures.csv");
-    matches<<"Weekend, Home Team, Away Team, Stadium, Day, Leg"<<endl;
-
-    for(int k = 0; k < fixtures.size(); k++){
-        matches<<fixtures[k].weekend<<",";
-        matches<<fixtures[k].home_team<<",";
-        matches<<fixtures[k].away_team<<",";
-        matches<<fixtures[k].stadium<<",";
-        matches<<fixtures[k].day<<",";
-        matches<<fixtures[k].leg<<endl;
-    }
-
-    matches.close();
+    
 }
 
 void write_fixtures(){
