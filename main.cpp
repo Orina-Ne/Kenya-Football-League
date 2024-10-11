@@ -11,6 +11,7 @@ struct Fixture{
     string hometown;
     int leg;
     int weekend;
+    string day;
 };
 
 string team_names[10];
@@ -38,13 +39,16 @@ void generate_fixtures(){
     int weekend = 1;
     int match_count = 0;
 
+    //A loop in a loop is used to pass through each team
     for(int i = 0; i < count; i++){
+        //join each team with another
         for(int j = i + 1; j < count; j++){
+            //make sure that teams from different home towns play first
             if(home_towns[i] != home_towns[j]){
-                fixtures.push_back({team_names[i], team_names[j], stadiums[i], home_towns[i], 1, weekend});
+                fixtures.push_back({team_names[i], team_names[j], stadiums[i], home_towns[i], 1, weekend, "Saturday"});
                 match_count++;
-
-                fixtures.push_back({team_names[j], team_names[i], stadiums[j], home_towns[j], 2, weekend});
+                //Second leg fixture
+                fixtures.push_back({team_names[j], team_names[i], stadiums[j], home_towns[j], 2, weekend, "Sunday"});
                 match_count++;
 
                 if (match_count == 2){
@@ -56,21 +60,37 @@ void generate_fixtures(){
     }
 
     for(int i = 0; i < count; i++){
-            for(int j = i + 1; j < count; j++){
-                if(home_towns[i] == home_towns[j]){
-                    fixtures.push_back({team_names[i], team_names[j], stadiums[i], home_towns[i], 1, weekend});
-                    match_count++;
+        for(int j = i + 1; j < count; j++){
+            if(home_towns[i] == home_towns[j]){
+                fixtures.push_back({team_names[i], team_names[j], stadiums[i], home_towns[i], 1, weekend, "Saturday"});
+                match_count++;
 
-                    fixtures.push_back({team_names[j], team_names[i], stadiums[j], home_towns[j], 2, weekend});
-                    match_count++;
+                fixtures.push_back({team_names[j], team_names[i], stadiums[j], home_towns[j], 2, weekend, "Sunday"});
+                match_count++;
 
-                    if(match_count == 2){
-                        weekend++;
-                        match_count = 0;
-                    }
+                if(match_count == 2){
+                    weekend++;
+                    match_count = 0;
                 }
             }
         }
+    }
+}
+
+void write_fixtures(){
+    ofstream matches("fixtures.csv");
+    matches<<"Weekend, Home Team, Away Team, Stadium, Day, Leg"<<endl;
+
+    for(int k = 0; k < fixtures.size(); k++){
+        matches<<fixtures[k].weekend<<",";
+        matches<<fixtures[k].home_team<<",";
+        matches<<fixtures[k].away_team<<",";
+        matches<<fixtures[k].stadium<<",";
+        matches<<fixtures[k].day<<",";
+        matches<<fixtures[k].leg<<endl;
+    }
+
+    matches.close();
 }
 
 int main() {
