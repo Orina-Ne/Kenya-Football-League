@@ -2,6 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 //Structure has been used to hold each fixtures details .
@@ -38,8 +40,11 @@ void read_csv(const string file_name){
     csv_file.close();
 }
 
-void time_generator(){
+string time_generator(){
 
+    int random_hour = rand() % 6+1;
+
+    return to_string(random_hour)+"pm";
 }
 
 void generate_fixtures(){
@@ -52,10 +57,10 @@ void generate_fixtures(){
         for(int j = i + 1; j < count; j++){
              //make sure that teams from different home towns play first
             if(home_towns[i] != home_towns[j]){
-                fixtures.push_back({team_names[i], team_names[j], stadiums[i], home_towns[i], 1, weekend, "Saturday"});
+            fixtures.push_back({team_names[i], team_names[j], stadiums[i], home_towns[i], 1, weekend, "Saturday", time_generator()});
                 match_count++;
             //Second leg fixture 
-                fixtures.push_back({team_names[j], team_names[i], stadiums[j], home_towns[j], 2, weekend, "Sunday"});
+                fixtures.push_back({team_names[j], team_names[i], stadiums[j], home_towns[j], 2, weekend, "Sunday", time_generator()});
                 match_count++;
 
                 if (match_count == 2){
@@ -69,10 +74,10 @@ void generate_fixtures(){
     for(int i = 0; i < count; i++){
             for(int j = i + 1; j < count; j++){
                 if(home_towns[i] == home_towns[j]){
-                    fixtures.push_back({team_names[i], team_names[j], stadiums[i], home_towns[i], 1, weekend, "Saturday"});
+                    fixtures.push_back({team_names[i], team_names[j], stadiums[i], home_towns[i], 1, weekend, "Saturday", time_generator()});
                     match_count++;
 
-                    fixtures.push_back({team_names[j], team_names[i], stadiums[j], home_towns[j], 2, weekend, "Sunday"});
+                    fixtures.push_back({team_names[j], team_names[i], stadiums[j], home_towns[j], 2, weekend, "Sunday", time_generator()});
                     match_count++;
 
                     if(match_count == 2){
@@ -107,16 +112,26 @@ void display_fixtures(){
         cout<<  "\tvs\n";
         cout <<fixtures[k].away_team<< endl;
         cout<<fixtures[k].stadium<< endl;
-        cout<<fixtures[k].day<<endl;
-        cout<<fixtures[k].leg<<"leg"<< endl;
+        cout<<fixtures[k].day<<" at "<< fixtures[k].time<<endl;
+        cout<<"\tLeg"<<fixtures[k].leg<< endl;
         cout<<"______________________________________________"<<endl;
     }
 
 }
 
-void find_weekend(int weekend_no){
-    bool found = false;
-    for(int i = 0; i < fixtures.size(); i++){
+void find_weekend(){
+    while(true){
+        int weekend_no;
+        cout<<"Welcome to ABC league\n";
+        cout<<"Enter a valid weekend number to see games played on that weekend or (-1 to quit)\n";
+        cin>> weekend_no;
+
+        if (weekend_no == -1){
+            break;
+        }
+
+        bool found = false;
+        for(int i = 0; i < fixtures.size(); i++){
         if(weekend_no == fixtures[i].weekend){
             cout<<"_____________________________"<<endl;
             cout<<"\t Weekend "<<fixtures[i].weekend<<endl;
@@ -124,30 +139,28 @@ void find_weekend(int weekend_no){
             cout<<"\tvs\n";
             cout<<fixtures[i].away_team<<endl;
             cout<<fixtures[i].stadium<<endl;
-            cout<<fixtures[i].day<<endl;
-            cout<<fixtures[i].leg<<endl;
+            cout<<fixtures[i].day<<" at "<<fixtures[i].time<<endl;
+            cout<<"\tLeg "<<fixtures[i].leg<<endl;
             cout<<"______________________________"<<endl;
             found = true;
         }
+        
     }
-
     if(!found){
-        cout<<"No matches found weekend number " << weekend_no << endl;
+        cout<<"No matches found for weekend number " << weekend_no << endl;
+    }
     }
 }
 
 int main() {
-    int weekend_number;
 
-    cout<<"Welcome to ABC league\n";
+    srand(time(0));
     read_csv(file_name);
     generate_fixtures();
     write_fixtures();
     display_fixtures();
-
-    cout<<"Enter a valid weekend number to see games played on that weekend\n";
-    cin>> weekend_number;
-    find_weekend(weekend_number);
+    find_weekend();
+    
 
     return 0;
 }
