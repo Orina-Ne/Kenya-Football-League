@@ -93,9 +93,25 @@ void write_fixtures(){
     matches.close();
 }
 
+void write_fixtures(){
+        ofstream matches("fixtures.csv");
+        matches<<"Weekend, Home Team, Away Team, Stadium, Leg"<<endl;
+
+        for(int k = 0; k < fixtures.size(); k++){
+            matches<<fixtures[k].weekend<<",";
+            matches<<fixtures[k].home_team<<",";
+            matches<<fixtures[k].away_team<<",";
+            matches<<fixtures[k].stadium<<",";
+            matches<<fixtures[k].leg<<endl;
+        }
+
+        matches.close();
+    }
+
 int main() {
     read_csv(file_name);
     generate_fixtures();
+    write_fixtures();
 
     for(int k = 0; k < fixtures.size(); k++){
         cout<<fixtures[k].weekend<<endl;
